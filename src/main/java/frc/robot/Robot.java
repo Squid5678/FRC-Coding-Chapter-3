@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     rightMotor.getConfigurator().apply(currentConfiguration);
 
     followerMotor1.setControl(new Follower(1, false));
-    followerMotor1.setControl(new Follower(1, false));
+    followerMotor2.setControl(new Follower(1, false));
 
     rightMotor.setInverted(true);
     

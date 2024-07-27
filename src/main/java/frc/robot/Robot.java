@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -23,7 +24,12 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-  private TalonFX myMotor = new TalonFX(1);
+  private TalonFX primaryMotor = new TalonFX(1);
+  private TalonFX followerMotor1 = new TalonFX(2);
+  private TalonFX followerMotor2 = new TalonFX(3);
+
+  private TalonFX leftMotor = new TalonFX(4);
+  private TalonFX rightMotor = new TalonFX(5);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,14 +42,34 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer(); 
 
     /* Reset the motor to its factory default. */
-    myMotor.getConfigurator().apply(new TalonFXConfiguration());
+    primaryMotor.getConfigurator().apply(new TalonFXConfiguration());
+    followerMotor1.getConfigurator().apply(new TalonFXConfiguration());
+    followerMotor2.getConfigurator().apply(new TalonFXConfiguration());
+    leftMotor.getConfigurator().apply(new TalonFXConfiguration());
+    rightMotor.getConfigurator().apply(new TalonFXConfiguration());
 
     /* Configure the current of the motor */
     var currentConfiguration = new CurrentLimitsConfigs();
     currentConfiguration.StatorCurrentLimit = 80;
     currentConfiguration.StatorCurrentLimitEnable = true;
-    myMotor.getConfigurator().refresh(currentConfiguration);
-    myMotor.getConfigurator().apply(currentConfiguration);
+
+    primaryMotor.getConfigurator().refresh(currentConfiguration);
+    followerMotor1.getConfigurator().refresh(currentConfiguration);
+    followerMotor2.getConfigurator().refresh(currentConfiguration);
+    leftMotor.getConfigurator().refresh(currentConfiguration);
+    rightMotor.getConfigurator().refresh(currentConfiguration);
+
+    primaryMotor.getConfigurator().apply(currentConfiguration);
+    followerMotor1.getConfigurator().apply(currentConfiguration);
+    followerMotor2.getConfigurator().apply(currentConfiguration);
+    leftMotor.getConfigurator().apply(currentConfiguration);
+    rightMotor.getConfigurator().apply(currentConfiguration);
+
+    followerMotor1.setControl(new Follower(1, false));
+    followerMotor1.setControl(new Follower(1, false));
+
+    rightMotor.setInverted(true);
+    
   }
 
   /**
@@ -99,7 +125,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     /* Set the motor's percent output. */
-    myMotor.set(0.5);
+    primaryMotor.set(0.5);
+    leftMotor.set(0.5);
+    rightMotor.set(0.5);
   }
 
   @Override

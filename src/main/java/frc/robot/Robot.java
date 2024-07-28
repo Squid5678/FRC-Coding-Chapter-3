@@ -9,6 +9,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +26,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private Joystick controller = new Joystick(0);
   
   private TalonFX primaryMotor = new TalonFX(1);
   private TalonFX followerMotor1 = new TalonFX(2);
@@ -105,6 +109,13 @@ public class Robot extends TimedRobot {
     /* Live readout of the primary motor's voltage */
     SmartDashboard.putNumber("PRIMARY MOTOR VOLTAGE", primaryMotor.getMotorVoltage().getValueAsDouble());
 
+
+    /* Joystick 0's button 0 */
+    SmartDashboard.putBoolean("JOYSTICK 0 BUTTON 1", controller.getRawButton(1));
+
+    /* Joystick 0's axis 0 */
+    SmartDashboard.putNumber("JOYSTICK 0 AXIS 1", controller.getRawAxis(1));
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -144,10 +155,27 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     /* Set the motor's percent output. */
-    primaryMotor.set(0.5);
-    leftMotor.set(0.5);
-    rightMotor.set(0.5);
+    // primaryMotor.set(0.5);
 
+    if (controller.getRawButton(1) == true){
+      primaryMotor.set(0.5);
+    }
+    else{
+      primaryMotor.set(0);
+    }
+
+    // leftMotor.set(0.5);
+    // rightMotor.set(0.5);
+
+    /* Without deadband */
+    // leftMotor.set(controller.getRawAxis(1));
+    // rightMotor.set(controller.getRawAxis(1));
+
+    /* With deadband */
+    double axis1Deadbanded = MathUtil.applyDeadband(controller.getRawAxis(1), 0.1);
+
+    leftMotor.set(axis1Deadbanded);
+    rightMotor.set(axis1Deadbanded);
 
     /* Incrementor that only runs when the robot is enabled in Teleop mode */
     SmartDashboard.putNumber("INCREMENTOR TELEOP", incrementorTeleop++);

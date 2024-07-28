@@ -76,6 +76,8 @@ public class Robot extends TimedRobot {
 
     rightMotor.setInverted(true);
     
+    /* Simple printout of a string */
+    SmartDashboard.putString("FIRST PRINT", "Hello World!");
   }
 
   /**
@@ -93,8 +95,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    /* Simple printout of a string */
-    SmartDashboard.putString("FIRST PRINT", "Hello World!");
+    
 
     /* Incrementor that always runs while the robot is turned on and code is loaded */
     SmartDashboard.putNumber("INCREMENTOR ROBOT", incrementorRobot++);

@@ -30,13 +30,13 @@ public class Robot extends TimedRobot {
   private TalonFX leftSidePrimary = new TalonFX(0);
   private TalonFX leftSideFollower = new TalonFX(1);
   private TalonFX rightSidePrimary = new TalonFX(2);
-  private TalonFX rightSideFollower = new TalonFX(3);
+  private TalonFX rightSideFollower = new TalonFX(2); //Problem #3
 
   /* Instantiate the Shooter Motor */
   private TalonFX shooterMotor = new TalonFX(4);
 
   /* Instantiate the Elevator Motor */
-  private TalonFX elevatorMotor = new TalonFX(5);
+  private TalonFX elevatorMotor; // = new TalonFX(5); Problem #2
 
   /* Instantiate the WPILib Timer */
   private Timer timer = new Timer();
@@ -173,7 +173,7 @@ public class Robot extends TimedRobot {
 
     /* SHOOTER MOTOR CONTROL */
     /* NOTE: Change button ID to whatever you want (my controller's A button = 1) */
-    if (xboxController.getRawButton(1)) {
+    if (xboxController.get(1)) { //Problem #1
       shooterMotor.set(0.5);
     } else {
       shooterMotor.set(0);
@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
       buttonIsPressed = true;
       
       direction = -1*direction;
-      timer.reset();
+      // timer.reset(); //Problem #4
       timer.start();
     }
     /* CASE 2: Releasing button */

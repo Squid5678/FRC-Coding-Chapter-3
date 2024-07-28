@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -30,6 +31,11 @@ public class Robot extends TimedRobot {
 
   private TalonFX leftMotor = new TalonFX(4);
   private TalonFX rightMotor = new TalonFX(5);
+
+
+  /* For testing SmartDashboard printouts */
+  private int incrementorRobot = 0;
+  private int incrementorTeleop = 0;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -86,6 +92,19 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    /* Simple printout of a string */
+    SmartDashboard.putString("FIRST PRINT", "Hello World!");
+
+    /* Incrementor that always runs while the robot is turned on and code is loaded */
+    SmartDashboard.putNumber("INCREMENTOR ROBOT", incrementorRobot++);
+
+    /* Live readout of the primary motor's percent out */
+    SmartDashboard.putNumber("PRIMARY MOTOR % OUT", primaryMotor.get());
+
+    /* Live readout of the primary motor's voltage */
+    SmartDashboard.putNumber("PRIMARY MOTOR VOLTAGE", primaryMotor.getMotorVoltage().getValueAsDouble());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -128,6 +147,13 @@ public class Robot extends TimedRobot {
     primaryMotor.set(0.5);
     leftMotor.set(0.5);
     rightMotor.set(0.5);
+
+
+    /* Incrementor that only runs when the robot is enabled in Teleop mode */
+    SmartDashboard.putNumber("INCREMENTOR TELEOP", incrementorTeleop++);
+
+    
+
   }
 
   @Override
